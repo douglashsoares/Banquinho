@@ -1,8 +1,8 @@
-package br.com.douglas.banquinho
+package br.com.douglas.banquinho.features.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_main.*
+import br.com.douglas.banquinho.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

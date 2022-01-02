@@ -1,15 +1,18 @@
 package br.com.douglas.banquinho.features.login
 
+import android.nfc.Tag
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import br.com.douglas.banquinho.R
+import br.com.douglas.banquinho.database.AccountHolderEntity
 import br.com.douglas.banquinho.database.DatabaseUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.bottom_sheet_sign_up.*
@@ -76,22 +79,17 @@ class SignUpBottomSheet : BottomSheetDialogFragment() {
                 ilConfirmPassword.isErrorEnabled = false
             }
 
-            if(DatabaseUtil.db.bankDao().searchId(account).toString() == account){
 
 
-
-
-            }
-
-                if (inputVerify) {
-                //toDo Nao pode Haver Duas CONTAS IGUAIS
-
-                //toDo Adicionar no Banco de Dados
-                findNavController().navigateUp()
+            if (inputVerify) {
+                if (DatabaseUtil.db.bankDao().isRowIsExist(account.toInt())) {
+                    ilAccount.error = "Conta já existe"
+                } else {
+                    DatabaseUtil.db.bankDao().insert(AccountHolderEntity(account.toInt(), password, balance = 100.0))
+                    findNavController().navigateUp()
+                }
             }
         }
-
-
     }
 
     private fun setupListener() {

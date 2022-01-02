@@ -13,10 +13,19 @@
         <action
             android:id="@+id/goToSignUp"
             app:destination="@id/signUpBottomSheet" />
+        <action
+            android:id="@+id/goToMain"
+            app:destination="@id/mainActivity"
+            app:launchSingleTop="true" />
     </fragment>
     <dialog
         android:id="@+id/signUpBottomSheet"
         android:name="br.com.douglas.banquinho.features.login.SignUpBottomSheet"
         android:label="bottom_sheet_sign_up"
         tools:layout="@layout/bottom_sheet_sign_up" />
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="br.com.douglas.banquinho.features.main.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
 </navigation>

@@ -7,5 +7,6 @@ import androidx.room.PrimaryKey
 @Entity
 data class AccountHolderEntity(
     @PrimaryKey val account: Int,
-    @ColumnInfo(name = "password") val password: String
+    @ColumnInfo(name = "password") val password: String,
+    @ColumnInfo(name = "balance") val balance: Double = 0.0
 )
