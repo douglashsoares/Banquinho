@@ -48,6 +48,7 @@ class LoginFragment : Fragment() {
                 ilPassword.error = "Senha Vazio"
                 inputVerify = false
             }
+
             if (inputVerify)
                 if (DatabaseUtil.db.bankDao().isRowIsExist(account.toInt())) {
                     val accountHolder = DatabaseUtil.db.bankDao().loadSingle(account.toInt())

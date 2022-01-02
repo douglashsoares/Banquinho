@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import br.com.douglas.banquinho.R
 import br.com.douglas.banquinho.database.AccountHolderEntity
@@ -18,8 +19,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.bottom_sheet_sign_up.*
 
 
+
 class SignUpBottomSheet : BottomSheetDialogFragment() {
 
+    val viewModel: SignUpViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,63 +37,62 @@ class SignUpBottomSheet : BottomSheetDialogFragment() {
         return inflater.inflate(R.layout.bottom_sheet_sign_up, container, false)
     }
 
+
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setupListener()
 
+        setupObservers()
+
         btnSignUp.setOnClickListener {
             val account = edtAccount.text.toString()
             val password = edtPassword.text.toString()
             val confirmPassword = edtConfirmPassword.text.toString()
-            var inputVerify = true
 
-            if (account.isNullOrEmpty()) {
-                ilAccount.error = "Nao pode ser vazio"
-                inputVerify = false
-            } else if (account.length > 9) {
-                ilAccount.error = "Maximo 9 Caracteres"
-                inputVerify = false
-            } else {
-                ilAccount.error = null
-                ilAccount.isErrorEnabled = false
-            }
-
-            if (password.length > 15) {
-                ilPassword.error = "Maximo 14 Caracteres"
-                inputVerify = false
-            } else if (password.isNullOrEmpty()) {
-                ilPassword.error = "Nao pode ser vazio"
-                inputVerify = false
-
-            } else {
-                ilPassword.error = null
-                ilPassword.isErrorEnabled = false
-            }
-
-            if (confirmPassword != password) {
-                ilConfirmPassword.error = "Senhas devem ser iguais"
-                inputVerify = false
-            } else if (confirmPassword.isNullOrEmpty()) {
-                ilConfirmPassword.error = "Nao pode ser vazio"
-                inputVerify = false
-            } else {
-                ilConfirmPassword.error = null
-                ilConfirmPassword.isErrorEnabled = false
-            }
-
-
+            val inputVerify = viewModel.validInput(account, password, confirmPassword)
 
             if (inputVerify) {
-                if (DatabaseUtil.db.bankDao().isRowIsExist(account.toInt())) {
-                    ilAccount.error = "Conta já existe"
-                } else {
-                    DatabaseUtil.db.bankDao().insert(AccountHolderEntity(account.toInt(), password, balance = 100.0))
-                    findNavController().navigateUp()
+                val accountExists = viewModel.checkExistingAccount(account)
+                if(!accountExists){
+                    viewModel.createAccount(account, password)
                 }
             }
         }
     }
+
+    private fun setupObservers() {
+        viewModel.accountErrorLiveData.observe(this){
+            ilAccount.error = it
+        }
+
+        viewModel.passwordErrorLiveData.observe(this){
+            ilPassword.error = it
+        }
+
+        viewModel.confirmPasswordErrorLiveData.observe(this){
+            ilConfirmPassword.error = it
+        }
+
+        viewModel.accountErrorEnabledLiveData.observe(this){
+            ilAccount.isErrorEnabled = it
+        }
+        viewModel.passwordErrorEnabledLiveData.observe(this){
+            ilPassword.isErrorEnabled = it
+        }
+        viewModel.confirmPasswordErrorEnabledLiveData.observe(this){
+            ilConfirmPassword.isErrorEnabled = it
+        }
+
+        viewModel.finishSignUpLiveData.observe(this){
+            if(it){
+                findNavController().navigateUp()
+            }
+        }
+    }
+
 
     private fun setupListener() {
         edtAccount.setOnFocusChangeListener { _, hasFocus ->
