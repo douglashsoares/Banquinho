@@ -52,34 +52,12 @@ class LoginFragment : Fragment() {
                     findNavController().navigate(LoginFragmentDirections.goToMain())
                 }
             }
-
         }
-//
-//        btnLogin.setOnClickListener {
-//            val account = edtAccount.text.toString()
-//            val password = edtPassword.text.toString()
-//            var inputVerify = true
-//
-//            if (inputVerify)
-//                if (DatabaseUtil.db.bankDao().isRowIsExist(account.toInt())) {
-//                    val accountHolder = DatabaseUtil.db.bankDao().loadSingle(account.toInt())
-//
-//                    if (accountHolder.password == password) {
-//                        LoginAccountHolder.instance = accountHolder
-//                        findNavController().navigate(LoginFragmentDirections.goToMain())
-//                    } else {
-//                        ilPassword.error = "Senhas não são Iguais"
-//                    }
-//                }else{
-//                    ilAccount.error = "Conta não Existe"
-//                }
-//        }
 
         btnSignUp.setOnClickListener {
             findNavController().navigate(LoginFragmentDirections.goToSignUp())
         }
     }
-
 
     private fun setupObservers() {
         viewModel.accountErrorLiveData.observe(viewLifecycleOwner) {

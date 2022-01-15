@@ -11,17 +11,7 @@ class LoginViewModel : ViewModel() {
     val passwordErrorLiveData: MutableLiveData<String?> = MutableLiveData()
 
 
-//    fun checkAccountExist(account: String): Boolean {
-//        if (DatabaseUtil.db.bankDao().isRowIsExist(account.toInt())) {
-//            return true
-//        }else{
-//            accountErrorLiveData.value = "Conta não existe"
-//            return false
-//        }
-//    }
-
     fun validAccount(account: String, password: String): Boolean {
-
             val accountHolder = DatabaseUtil.db.bankDao().loadSingle(account.toInt())
 
             if (accountHolder.password == password) {
