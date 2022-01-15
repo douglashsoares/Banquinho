@@ -33,6 +33,9 @@ class MainFragment : Fragment() {
 
         setAccountHolderBalance()
 
+        btnExchange.setOnClickListener(){
+            findNavController().navigate(MainFragmentDirections.goToExchange())
+        }
         imgOpenEye.setOnClickListener {
             if (txtCaixaPreta.visibility == View.GONE) {
                 txtCaixaPreta.visibility = View.VISIBLE
@@ -41,6 +44,9 @@ class MainFragment : Fragment() {
             }
         }
     }
+
+
+
 
 
     private fun setAccountHolderBalance() {

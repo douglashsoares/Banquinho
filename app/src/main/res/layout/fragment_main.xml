@@ -7,6 +7,7 @@
     tools:context=".features.main.MainFragment">
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardBalance"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_margin="16dp"
@@ -31,6 +32,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
 
             <TextView
                 android:id="@+id/txtRs"
@@ -92,5 +94,16 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
+
+    <Button
+        android:id="@+id/btnExchange"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Cambio"
+        app:layout_constraintTop_toBottomOf="@id/cardBalance"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+    </Button>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

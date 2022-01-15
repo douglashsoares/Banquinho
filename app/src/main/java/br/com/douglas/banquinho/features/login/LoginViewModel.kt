@@ -35,7 +35,6 @@ class LoginViewModel : ViewModel() {
             passwordErrorLiveData.postValue("Campo Vazio")
             inputVerify = false
         }
-
         return inputVerify
     }
 

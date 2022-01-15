@@ -36,7 +36,6 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         setupObservers()
 
         btnLogin.setOnClickListener() {
@@ -67,6 +66,4 @@ class LoginFragment : Fragment() {
             ilPassword.error = it
         }
     }
-
-
 }

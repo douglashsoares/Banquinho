@@ -13,10 +13,18 @@
         <action
             android:id="@+id/action_mainFragment_to_blankFragment"
             app:destination="@id/blankFragment" />
+        <action
+            android:id="@+id/goToExchange"
+            app:destination="@id/exchangeFragment" />
     </fragment>
     <fragment
         android:id="@+id/blankFragment"
         android:name="br.com.douglas.banquinho.features.main.BlankFragment"
         android:label="fragment_blank"
         tools:layout="@layout/fragment_blank" />
+    <fragment
+        android:id="@+id/exchangeFragment"
+        android:name="br.com.douglas.banquinho.exchange.ExchangeFragment"
+        android:label="fragment_exchange"
+        tools:layout="@layout/fragment_exchange" />
 </navigation>
