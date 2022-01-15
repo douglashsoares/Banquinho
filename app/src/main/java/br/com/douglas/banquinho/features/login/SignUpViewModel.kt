@@ -40,7 +40,6 @@ class SignUpViewModel : ViewModel() {
         var inputVerify = true
 
         if (account.isNullOrEmpty()) {
-
             accountErrorLiveData.postValue("Não pode ser vazio")
             inputVerify = false
         } else if (account.length > 9) {

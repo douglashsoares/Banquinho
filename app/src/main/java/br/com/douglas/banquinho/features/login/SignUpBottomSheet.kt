@@ -37,9 +37,6 @@ class SignUpBottomSheet : BottomSheetDialogFragment() {
         return inflater.inflate(R.layout.bottom_sheet_sign_up, container, false)
     }
 
-
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

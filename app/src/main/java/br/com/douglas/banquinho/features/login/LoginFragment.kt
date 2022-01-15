@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import br.com.douglas.banquinho.R
 import br.com.douglas.banquinho.database.AccountHolderEntity
@@ -23,6 +24,7 @@ import kotlinx.android.synthetic.main.login_fragment.ilPassword
 
 class LoginFragment : Fragment() {
 
+    val viewModel: LoginViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,39 +36,59 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btnLogin.setOnClickListener {
+
+        setupObservers()
+
+        btnLogin.setOnClickListener() {
             val account = edtAccount.text.toString()
             val password = edtPassword.text.toString()
-            var inputVerify = true
 
-            if (account.isEmpty()) {
-                ilAccount.error = "Login Vazio"
-                inputVerify = false
-            }
+            var inputVerify = viewModel.validInput(account, password)
 
-            if (password.isEmpty()) {
-                ilPassword.error = "Senha Vazio"
-                inputVerify = false
-            }
-
-            if (inputVerify)
-                if (DatabaseUtil.db.bankDao().isRowIsExist(account.toInt())) {
+            if (inputVerify) {
+                if (viewModel.validAccount(account, password)) {
                     val accountHolder = DatabaseUtil.db.bankDao().loadSingle(account.toInt())
-
-                    if (accountHolder.password == password) {
-                        LoginAccountHolder.instance = accountHolder
-                        findNavController().navigate(LoginFragmentDirections.goToMain())
-                    } else {
-                        ilPassword.error = "Senhas não são Iguais"
-                    }
-                }else{
-                    ilAccount.error = "Conta não Existe"
+                    LoginAccountHolder.instance = accountHolder
+                    findNavController().navigate(LoginFragmentDirections.goToMain())
                 }
+            }
+
         }
+//
+//        btnLogin.setOnClickListener {
+//            val account = edtAccount.text.toString()
+//            val password = edtPassword.text.toString()
+//            var inputVerify = true
+//
+//            if (inputVerify)
+//                if (DatabaseUtil.db.bankDao().isRowIsExist(account.toInt())) {
+//                    val accountHolder = DatabaseUtil.db.bankDao().loadSingle(account.toInt())
+//
+//                    if (accountHolder.password == password) {
+//                        LoginAccountHolder.instance = accountHolder
+//                        findNavController().navigate(LoginFragmentDirections.goToMain())
+//                    } else {
+//                        ilPassword.error = "Senhas não são Iguais"
+//                    }
+//                }else{
+//                    ilAccount.error = "Conta não Existe"
+//                }
+//        }
 
         btnSignUp.setOnClickListener {
             findNavController().navigate(LoginFragmentDirections.goToSignUp())
         }
     }
+
+
+    private fun setupObservers() {
+        viewModel.accountErrorLiveData.observe(viewLifecycleOwner) {
+            ilAccount.error = it
+        }
+        viewModel.passwordErrorLiveData.observe(viewLifecycleOwner) {
+            ilPassword.error = it
+        }
+    }
+
 
 }
